@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarSpaced | Energy Beyond Horizons</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- RESET & BASICS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #050510;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- VARIABLES --- */
+        :root {
+            --primary: #00f2ff; /* Neon Cyan */
+            --secondary: #ff9d00; /* Solar Orange */
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-glow: 0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
+        .highlight { color: var(--primary); text-shadow: var(--neon-glow); }
+        .orange-highlight { color: var(--secondary); }
+
+        /* --- ANIMATED STAR BACKGROUND (PURE CSS) --- */
+        .stars, .twinkling {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block;
+            z-index: -1;
+        }
+        .stars { background: #000 url('http://www.script-tutorials.com/demos/360/images/stars.png') repeat top center; }
+        .twinkling {
+            background: transparent url('http://www.script-tutorials.com/demos/360/images/twinkling.png') repeat top center;
+            animation: move-twink-back 200s linear infinite;
+        }
+        @keyframes move-twink-back { from {background-position:0 0;} to {background-position:-10000px 5000px;} }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%;
+            background: rgba(5, 5, 16, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+        .nav-links { list-style: none; display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: #fff; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); text-shadow: var(--neon-glow); }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 5% 50px;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+        .hero-text { flex: 1; min-width: 300px; animation: slideInLeft 1s ease-out; }
+        .hero-text h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; }
+        .hero-text p { font-size: 1.2rem; margin-bottom: 30px; color: #ccc; }
+        
+        .hero-img { 
+            flex: 1; 
+            min-width: 300px; 
+            display: flex; 
+            justify-content: center; 
+            animation: float 6s ease-in-out infinite; 
+            position: relative;
+        }
+        /* The main logo image */
+        .hero-img img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.2));
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 12px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:hover { background: var(--primary); color: #000; box-shadow: var(--neon-glow); }
+
+        /* --- SECTIONS --- */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 60px; }
+        
+        /* --- 3D TILT CARDS (SERVICES) --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            perspective: 1000px;
+        }
+
+        .tilt-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 15px;
+            transform-style: preserve-3d;
+            transition: transform 0.1s; /* Fast transition for JS tracking */
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tilt-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            opacity: 0; transition: 0.3s;
+        }
+        .tilt-card:hover::before { opacity: 1; }
+
+        /* Card Content Push (3D effect) */
+        .card-content { transform: translateZ(30px); }
+        .tilt-card h3 { color: var(--secondary); margin-bottom: 15px; font-size: 1.5rem; }
+        .tilt-card p { color: #ddd; font-size: 0.95rem; }
+        .icon-box { font-size: 2rem; margin-bottom: 20px; color: var(--primary); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #02020a;
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 5%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero-text h1 { font-size: 2.5rem; }
+            .nav-links {
+                display: none; position: absolute; top: 70px; left: 0; width: 100%;
+                background: rgba(0,0,0,0.95); flex-direction: column; padding: 20px; text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <nav>
+        <div class="logo">Solar<span class="highlight">Spaced</span></div>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tech">Technology</a></li>
+            <li><a href="#services">Solutions</a></li>
+            <li><a href="#uav">UAVs</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-text">
+            <h1>Powering the <br><span class="highlight">Cosmos</span></h1>
+            <p>SolarSpaced is bridging the gap between terrestrial renewable energy and extraterrestrial exploration. We provide comprehensive solar solutions for Earth's grid and the next generation of space applications.</p>
+            <button class="btn" onclick="document.getElementById('services').scrollIntoView()">Explore Systems</button>
+        </div>
+        <div class="hero-img">
+            <img src="solarspacedcircle.png" alt="SolarSpaced Futuristic Earth Logo">
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title">Mission <span class="highlight">Capabilities</span></h2>
+        
+        <div class="grid-container">
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">☀️</div>
+                    <h3>Advanced Photovoltaics</h3>
+                    <p>Next-generation multi-junction solar cells designed for maximum efficiency. Our panels operate at 45% efficiency in low-light orbital conditions and withstand extreme radiation environments.</p>
+                </div>
+            </div>
+
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">🛰️</div>
+                    <h3>Space Applications</h3>
+                    <p>From satellite power systems to lunar habitat grids. SolarSpaced engineers lightweight, deployable solar arrays that fold for launch and unfurl to capture the sun's limitless power.</p>
+                </div>
+            </div>
+
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">🚁</div>
+                    <h3>Solar UAVs</h3>
+                    <p>Perpetual flight drones powered by skin-integrated solar cells. Designed for atmospheric monitoring on Earth and autonomous exploration of Mars, featuring infinite loiter times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="uav" style="background: rgba(0, 242, 255, 0.02);">
+        <h2 class="section-title">The <span class="orange-highlight">UAV</span> Frontier</h2>
+        <div class="grid-container" style="align-items: center;">
+            <div style="font-size: 1.1rem; color: #ccc;">
+                <h3 class="highlight">Autonomous & Infinite</h3>
+                <p><br>Our Unmanned Aerial Vehicles (UAVs) represent the pinnacle of solar integration. By utilizing ultra-lightweight fuselage materials and transparent solar skins, SolarSpaced drones can remain airborne for months.</p>
+                <br>
+                <ul style="list-style: none;">
+                    <li>✓ Stratospheric Telecommunications</li>
+                    <li>✓ Agricultural Monitoring</li>
+                    <li>✓ Planetary Surface Scanning</li>
+                </ul>
+            </div>
+            <div class="tilt-card" style="border-color: var(--secondary);" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content" style="text-align: center;">
+                    <div style="font-size: 4rem; color: var(--secondary);">✈</div>
+                    <h3>Titan-X Drone</h3>
+                    <p>Wingspan: 45m <br> Payload: 15kg <br> Endurance: Indefinite</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 SolarSpaced Industries. All Systems Nominal.</p>
+    </footer>
+
+    <script>
+        // --- MOBILE MENU TOGGLE ---
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            nav.classList.toggle('active');
+        }
+
+        // --- 3D TILT EFFECT LOGIC ---
+        function tilt(e, card) {
+            const rect = card.getBoundingClientRect();
+            // Calculate mouse position relative to the card
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;
+            
+            // Calculate center of card
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Calculate rotation (max 20 degrees)
+            const rotateX = ((y - centerY) / centerY) * -10; // Invert Y axis for natural tilt
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            // Apply transform
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        }
+
+        function resetTilt(card) {
+            // Reset to flat state smoothly
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            card.style.transition = 'transform 0.5s ease';
+            
+            // Remove the transition delay after it settles so mousemove is snappy again
+            setTimeout(() => {
+                card.style.transition = 'transform 0.1s';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
