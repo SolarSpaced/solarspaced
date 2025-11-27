@@ -26,12 +26,13 @@
             --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --neon-glow: 0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+            --orange-glow: 0 0 10px rgba(255, 157, 0, 0.5), 0 0 20px rgba(255, 157, 0, 0.3);
         }
 
         /* --- TYPOGRAPHY --- */
-        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
+        h1, h2, h3, h4 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
         .highlight { color: var(--primary); text-shadow: var(--neon-glow); }
-        .orange-highlight { color: var(--secondary); }
+        .orange-highlight { color: var(--secondary); text-shadow: var(--orange-glow); }
 
         /* --- ANIMATED STAR BACKGROUND (PURE CSS) --- */
         .stars, .twinkling {
@@ -49,16 +50,31 @@
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 5%;
-            background: rgba(5, 5, 16, 0.8);
+            background: rgba(5, 5, 16, 0.9);
             backdrop-filter: blur(10px);
             position: fixed; width: 100%; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--glass-border);
         }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
-        .nav-links { list-style: none; display: flex; gap: 30px; }
-        .nav-links a { text-decoration: none; color: #fff; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--primary); text-shadow: var(--neon-glow); }
-        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; }
+        
+        /* The Header Button */
+        .nav-btn {
+            background: var(--primary);
+            color: #050510;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: var(--neon-glow);
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+        .nav-btn:hover {
+            transform: scale(1.05);
+            background: #fff;
+        }
 
         /* --- HERO SECTION --- */
         .hero {
@@ -80,9 +96,7 @@
             display: flex; 
             justify-content: center; 
             animation: float 6s ease-in-out infinite; 
-            position: relative;
         }
-        /* The main logo image */
         .hero-img img {
             width: 100%;
             max-width: 500px;
@@ -90,28 +104,11 @@
             filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.2));
         }
 
-        /* --- BUTTONS --- */
-        .btn {
-            padding: 12px 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 2px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            cursor: pointer;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn:hover { background: var(--primary); color: #000; box-shadow: var(--neon-glow); }
-
         /* --- SECTIONS --- */
-        section { padding: 80px 5%; }
+        section { padding: 80px 5%; position: relative; }
         .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 60px; }
         
-        /* --- 3D TILT CARDS (SERVICES) --- */
+        /* --- GRID SYSTEM --- */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -119,31 +116,110 @@
             perspective: 1000px;
         }
 
+        /* --- CARDS --- */
         .tilt-card {
             background: var(--glass);
             border: 1px solid var(--glass-border);
             padding: 40px;
             border-radius: 15px;
             transform-style: preserve-3d;
-            transition: transform 0.1s; /* Fast transition for JS tracking */
+            transition: transform 0.1s;
             backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        
-        .tilt-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            opacity: 0; transition: 0.3s;
-        }
-        .tilt-card:hover::before { opacity: 1; }
-
-        /* Card Content Push (3D effect) */
-        .card-content { transform: translateZ(30px); }
+        .tilt-card:hover { border-color: var(--primary); }
+        .card-content { transform: translateZ(30px); margin-bottom: 20px; }
         .tilt-card h3 { color: var(--secondary); margin-bottom: 15px; font-size: 1.5rem; }
         .tilt-card p { color: #ddd; font-size: 0.95rem; }
         .icon-box { font-size: 2rem; margin-bottom: 20px; color: var(--primary); }
+
+        /* Small button inside cards */
+        .card-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            align-self: flex-start;
+            transform: translateZ(40px);
+        }
+        .card-btn:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* --- UAV & CUBESAT LIST --- */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .tech-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid var(--secondary);
+            padding: 20px;
+            transition: 0.3s;
+        }
+        .tech-card:hover { background: rgba(255, 157, 0, 0.1); transform: translateY(-5px); }
+        .tech-card h4 { color: #fff; margin-bottom: 5px; }
+        .tech-card span { color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* --- MODAL FORM --- */
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-container {
+            background: #111;
+            border: 1px solid var(--primary);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.1);
+            animation: slideDown 0.4s ease;
+        }
+        .close-btn {
+            position: absolute; top: 15px; right: 20px;
+            color: #fff; font-size: 1.5rem; cursor: pointer;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--primary); font-family: 'Orbitron'; font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            color: #fff;
+            font-family: 'Rajdhani';
+            font-size: 1rem;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--secondary);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #fff; box-shadow: 0 0 20px var(--primary); }
 
         /* --- FOOTER --- */
         footer {
@@ -158,16 +234,12 @@
         /* --- ANIMATIONS --- */
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero-text h1 { font-size: 2.5rem; }
-            .nav-links {
-                display: none; position: absolute; top: 70px; left: 0; width: 100%;
-                background: rgba(0,0,0,0.95); flex-direction: column; padding: 20px; text-align: center;
-            }
-            .nav-links.active { display: flex; }
-            .hamburger { display: block; }
+            .grid-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -178,28 +250,21 @@
 
     <nav>
         <div class="logo">Solar<span class="highlight">Spaced</span></div>
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#tech">Technology</a></li>
-            <li><a href="#services">Solutions</a></li>
-            <li><a href="#uav">UAVs</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <button class="nav-btn" onclick="openModal()">Collaborate on a Project</button>
     </nav>
 
     <section id="home" class="hero">
         <div class="hero-text">
             <h1>Powering the <br><span class="highlight">Cosmos</span></h1>
-            <p>SolarSpaced is bridging the gap between terrestrial renewable energy and extraterrestrial exploration. We provide comprehensive solar solutions for Earth's grid and the next generation of space applications.</p>
-            <button class="btn" onclick="document.getElementById('services').scrollIntoView()">Explore Systems</button>
+            <p>SolarSpaced is bridging the gap between terrestrial renewable energy and extraterrestrial exploration. We provide comprehensive solar solutions, UAV networks, and CubeSat infrastructure for the next generation.</p>
+            <button class="btn nav-btn" onclick="openModal()">Start Your Mission</button>
         </div>
         <div class="hero-img">
             <img src="solarspacedcircle.png" alt="SolarSpaced Futuristic Earth Logo">
         </div>
     </section>
 
-    <section id="services">
+    <section id="capabilities">
         <h2 class="section-title">Mission <span class="highlight">Capabilities</span></h2>
         
         <div class="grid-container">
@@ -207,47 +272,126 @@
                 <div class="card-content">
                     <div class="icon-box">☀️</div>
                     <h3>Advanced Photovoltaics</h3>
-                    <p>Next-generation multi-junction solar cells designed for maximum efficiency. Our panels operate at 45% efficiency in low-light orbital conditions and withstand extreme radiation environments.</p>
+                    <p>Next-generation multi-junction solar cells designed for maximum efficiency in low-light orbital conditions and extreme radiation.</p>
                 </div>
+                <button class="card-btn" onclick="openModal('Advanced Photovoltaics')">Collaborate</button>
             </div>
 
             <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
                 <div class="card-content">
                     <div class="icon-box">🛰️</div>
                     <h3>Space Applications</h3>
-                    <p>From satellite power systems to lunar habitat grids. SolarSpaced engineers lightweight, deployable solar arrays that fold for launch and unfurl to capture the sun's limitless power.</p>
+                    <p>Resilient solar arrays for lunar habitats and deep-space probes, featuring self-healing nano-materials.</p>
                 </div>
+                <button class="card-btn" onclick="openModal('Space Applications')">Collaborate</button>
             </div>
 
             <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
                 <div class="card-content">
                     <div class="icon-box">🚁</div>
                     <h3>Solar UAVs</h3>
-                    <p>Perpetual flight drones powered by skin-integrated solar cells. Designed for atmospheric monitoring on Earth and autonomous exploration of Mars, featuring infinite loiter times.</p>
+                    <p>Perpetual flight drones powered by skin-integrated solar cells for atmospheric monitoring and surveillance.</p>
                 </div>
+                <button class="card-btn" onclick="openModal('Solar UAVs')">Collaborate</button>
+            </div>
+
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">📦</div>
+                    <h3>CubeSat Deployers</h3>
+                    <p>Modular small-satellite chassis with integrated power management systems for low-orbit constellations.</p>
+                </div>
+                <button class="card-btn" onclick="openModal('CubeSats')">Collaborate</button>
+            </div>
+
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">🔋</div>
+                    <h3>High-Density Storage</h3>
+                    <p>Solid-state battery solutions capable of functioning in the vacuum of space at near-zero temperatures.</p>
+                </div>
+                <button class="card-btn" onclick="openModal('Energy Storage')">Collaborate</button>
+            </div>
+
+            <div class="tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <div class="icon-box">📡</div>
+                    <h3>Orbital Energy Transfer</h3>
+                    <p>Wireless microwave energy transmission from orbital solar farms to ground-based receiver stations.</p>
+                </div>
+                <button class="card-btn" onclick="openModal('Orbital Energy Transfer')">Collaborate</button>
             </div>
         </div>
     </section>
 
     <section id="uav" style="background: rgba(0, 242, 255, 0.02);">
         <h2 class="section-title">The <span class="orange-highlight">UAV</span> Frontier</h2>
-        <div class="grid-container" style="align-items: center;">
-            <div style="font-size: 1.1rem; color: #ccc;">
-                <h3 class="highlight">Autonomous & Infinite</h3>
-                <p><br>Our Unmanned Aerial Vehicles (UAVs) represent the pinnacle of solar integration. By utilizing ultra-lightweight fuselage materials and transparent solar skins, SolarSpaced drones can remain airborne for months.</p>
-                <br>
-                <ul style="list-style: none;">
-                    <li>✓ Stratospheric Telecommunications</li>
-                    <li>✓ Agricultural Monitoring</li>
-                    <li>✓ Planetary Surface Scanning</li>
-                </ul>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto 40px auto; color: #aaa;">Autonomous, solar-powered flight capable of indefinite loiter times for Earth and Martian atmospheres.</p>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h4>Titan-X Stratos</h4>
+                <span>High-Altitude Pseudolite</span>
+                <p style="font-size: 0.8rem; margin-top: 5px;">Wingspan: 45m | Payload: 15kg</p>
+                <button class="card-btn" style="margin-top: 10px;" onclick="openModal('UAV: Titan-X')">Inquire</button>
             </div>
-            <div class="tilt-card" style="border-color: var(--secondary);" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
-                <div class="card-content" style="text-align: center;">
-                    <div style="font-size: 4rem; color: var(--secondary);">✈</div>
-                    <h3>Titan-X Drone</h3>
-                    <p>Wingspan: 45m <br> Payload: 15kg <br> Endurance: Indefinite</p>
+            <div class="tech-card">
+                <h4>Helios-7 Glider</h4>
+                <span>Mars Atmosphere Scout</span>
+                <p style="font-size: 0.8rem; margin-top: 5px;">Wingspan: 12m | Weight: 4kg</p>
+                <button class="card-btn" style="margin-top: 10px;" onclick="openModal('UAV: Helios-7')">Inquire</button>
+            </div>
+            <div class="tech-card">
+                <h4>Photon-V</h4>
+                <span>Agricultural Monitor</span>
+                <p style="font-size: 0.8rem; margin-top: 5px;">Flight Time: Indefinite | AI Optical</p>
+                <button class="card-btn" style="margin-top: 10px;" onclick="openModal('UAV: Photon-V')">Inquire</button>
+            </div>
+            <div class="tech-card">
+                <h4>Solaris-9</h4>
+                <span>Comms Relay Node</span>
+                <p style="font-size: 0.8rem; margin-top: 5px;">Alt: 60,000ft | 5G/6G Mesh</p>
+                <button class="card-btn" style="margin-top: 10px;" onclick="openModal('UAV: Solaris-9')">Inquire</button>
+            </div>
+            <div class="tech-card">
+                <h4>Vanguard Heavy</h4>
+                <span>Logistics Transport</span>
+                <p style="font-size: 0.8rem; margin-top: 5px;">Payload: 50kg | Hybrid Power</p>
+                <button class="card-btn" style="margin-top: 10px;" onclick="openModal('UAV: Vanguard')">Inquire</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="cubesats">
+        <h2 class="section-title">The <span class="highlight">CubeSat</span> Frontier</h2>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto 40px auto; color: #aaa;">Standardized, modular microsatellites designed for swarm intelligence and rapid deployment.</p>
+        
+        <div class="grid-container">
+             <div class="tilt-card" style="border-color: var(--secondary);" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <h3>1U Nano-Sat</h3>
+                    <p style="color: var(--primary);">10x10x10cm</p>
+                    <p>Ideal for educational missions and simple sensor testing. Fully integrated solar panels on all 6 faces.</p>
                 </div>
+                <button class="card-btn" onclick="openModal('CubeSat: 1U')">Configure</button>
+            </div>
+
+            <div class="tilt-card" style="border-color: var(--secondary);" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <h3>3U Constellation</h3>
+                    <p style="color: var(--primary);">10x10x30cm</p>
+                    <p>The industry standard for earth observation. Supports deployable solar wings for 30W+ power generation.</p>
+                </div>
+                <button class="card-btn" onclick="openModal('CubeSat: 3U')">Configure</button>
+            </div>
+
+            <div class="tilt-card" style="border-color: var(--secondary);" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card-content">
+                    <h3>6U Deep Space</h3>
+                    <p style="color: var(--primary);">10x20x30cm</p>
+                    <p>Equipped with ion propulsion and high-gain antennas for lunar and interplanetary trajectory missions.</p>
+                </div>
+                <button class="card-btn" onclick="openModal('CubeSat: 6U')">Configure</button>
             </div>
         </div>
     </section>
@@ -256,41 +400,87 @@
         <p>&copy; 2024 SolarSpaced Industries. All Systems Nominal.</p>
     </footer>
 
+    <div class="modal-overlay" id="collabModal">
+        <div class="modal-container">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 20px;">Project Parameters</h2>
+            
+            <form action="https://formspree.io/f/xqaobyqp" method="POST">
+                
+                <div class="form-group">
+                    <label>1. Name / Company Name</label>
+                    <input type="text" name="name" placeholder="e.g. SolarSpaced Industries" required>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Location</label>
+                    <input type="text" name="location" placeholder="e.g. Mars Colony 1 / Nairobi" required>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Product / Mission</label>
+                    <input type="text" name="product_mission" id="missionInput" placeholder="e.g. Solar Array Installation" required>
+                </div>
+
+                <div class="form-group">
+                    <label>4. Quantity</label>
+                    <input type="text" name="quantity" placeholder="e.g. 5000 kWh / 3 Units">
+                </div>
+
+                <div class="form-group">
+                    <label>5. Deliverables & Offer</label>
+                    <textarea name="deliverables" rows="3" placeholder="Describe the mission scope..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>6. Email Address</label>
+                    <input type="email" name="email" placeholder="contact@domain.com" required>
+                </div>
+
+                <button type="submit" class="submit-btn">INITIATE UPLINK</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // --- MOBILE MENU TOGGLE ---
-        function toggleMenu() {
-            const nav = document.querySelector('.nav-links');
-            nav.classList.toggle('active');
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById('collabModal');
+        const missionInput = document.getElementById('missionInput');
+
+        function openModal(prefillMission = '') {
+            modal.style.display = 'flex';
+            if(prefillMission) {
+                missionInput.value = prefillMission;
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close if clicked outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
         }
 
         // --- 3D TILT EFFECT LOGIC ---
         function tilt(e, card) {
             const rect = card.getBoundingClientRect();
-            // Calculate mouse position relative to the card
             const x = e.clientX - rect.left; 
             const y = e.clientY - rect.top;
-            
-            // Calculate center of card
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-
-            // Calculate rotation (max 20 degrees)
-            const rotateX = ((y - centerY) / centerY) * -10; // Invert Y axis for natural tilt
+            const rotateX = ((y - centerY) / centerY) * -10; 
             const rotateY = ((x - centerX) / centerX) * 10;
 
-            // Apply transform
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
         }
 
         function resetTilt(card) {
-            // Reset to flat state smoothly
             card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-            card.style.transition = 'transform 0.5s ease';
-            
-            // Remove the transition delay after it settles so mousemove is snappy again
-            setTimeout(() => {
-                card.style.transition = 'transform 0.1s';
-            }, 500);
+            setTimeout(() => { card.style.transition = 'transform 0.1s'; }, 500);
         }
     </script>
 </body>
